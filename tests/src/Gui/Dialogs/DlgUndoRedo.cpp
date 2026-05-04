@@ -95,47 +95,84 @@ private Q_SLOTS:
 		//The availble undo actions before and after the test should be the same
 		Q_ASSERT(undoStringAfter == undoStringBefore);
 	}
-	void testSelectUndoandRedoEmpty() // NOLINT
+	void testSelectUndoandRedoEmpty()
 	{
-		//Arrange
-		//Act 
-		//Assert
-		//Q_ASSERT();
+		mdi = getMainWindow()->activeWindow();
+		Document test = mdi->getGuiDocument();
+        test::slotNewObject();
+        UndoDialog undo = new UndoDialog(mdi); 
+		RedoDialog redo = new RedoDialog(mdi);
+        undo::onFetchInfo();
+        redo::onFetchInfo();
+        QStringList vecUndos = mdi->undoActions();
+        QStringList vecRedos = mdi->redoActions();
+        Q_ASSERT(vecUndos.size() == 0 && vecRedos.size() == 0);
 	}
-	void testSelectUndoandRedo() // NOLINT
+	void testSelectUndoandRedo()
 	{
-		//Arrange
-		//Act 
-		//Assert
-		//Q_ASSERT();
+        mdi = getMainWindow()->activeWindow();
+        Document test = mdi->getGuiDocument();
+        test::openCommand("Mock1");
+        test::openCommand("Mock2");
+        UndoDialog undo = new UndoDialog(mdi);
+        RedoDialog redo = new RedoDialog(mdi);
+        undo::onFetchInfo();
+        redo::onFetchInfo();
+        QStringList vecUndos = mdi->undoActions();
+        QStringList vecRedos = mdi->redoActions();
+        Q_ASSERT(vecUndos.size() == 1 && vecRedos.size() == 1);
 	}
-	void testSelectUndo() // NOLINT
+	void testSelectUndo()
 	{
-		//Arrange
-		//Act 
-		//Assert
-		//Q_ASSERT();
+        mdi = getMainWindow()->activeWindow();
+        Document test = mdi->getGuiDocument();
+        test::openCommand("Mock1");
+        test::openCommand("Mock2");
+        UndoDialog undo = new UndoDialog(mdi);
+        undo::onFetchInfo();
+        QStringList vecUndos = mdi->undoActions();
+        Q_ASSERT(vecUndos.size() == 1)
 	}
-	void testSelectRedo() // NOLINT
+	void testSelectRedo()
 	{
-		//Arrange
-		//Act 
-		//Assert
-		//Q_ASSERT();
+        mdi = getMainWindow()->activeWindow();
+        Document test = mdi->getGuiDocument();
+        test::openCommand("Mock1");
+        test::openCommand("Mock2");
+        RedoDialog redo = new RedoDialog(mdi);
+        redo::onFetchInfo();
+        QStringList vecRedos = mdi->redoActions();
+        Q_ASSERT(vecRedos.size() == 1)
 	}
-	void testSelectEarlierUndoandRedo() // NOLINT
+	void testSelectEarlierUndoandRedo()
 	{
-		//Arrange
-		//Act 
-		//Assert
-		//Q_ASSERT();
-	} 
-	void testUndoLaterRedo() // NOLINT
+        mdi = getMainWindow()->activeWindow();
+        Document test = mdi->getGuiDocument();
+        test::openCommand("Mock1");
+        test::openCommand("Mock2");
+        UndoDialog undo = new UndoDialog(mdi);
+        RedoDialog redo = new RedoDialog(mdi);
+        undo::onFetchInfo();
+        undo::onFetchInfo();
+        redo::onFetchInfo();
+        QStringList vecUndos = mdi->undoActions();
+        QStringList vecRedos = mdi->redoActions();
+        Q_ASSERT(vecUndos.size() == 1 && vecRedos.size() == 1);
+	}
+	void testUndoLaterRedo()
 	{
-		//Arrange
-		//Act 
-		//Assert
-		//Q_ASSERT();
+        mdi = getMainWindow()->activeWindow();
+        Document test = mdi->getGuiDocument();
+        test::openCommand("Mock1");
+        test::openCommand("Mock2");
+        UndoDialog undo = new UndoDialog(mdi);
+        RedoDialog redo = new RedoDialog(mdi);
+        undo::onFetchInfo();
+        redo::onFetchInfo();
+        redo::onFetchInfo();
+        QStringList vecUndos = mdi->undoActions();
+        QStringList vecRedos = mdi->redoActions();
+        Q_ASSERT(vecUndos.size() == 2 && vecRedos.size() == 0);
 	}
 	void testSavingThenUndo() // NOLINT
 	{
